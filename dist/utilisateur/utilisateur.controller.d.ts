@@ -4,9 +4,11 @@ import { UpdateUtilisateurDto } from './dto/update-utilisateur.dto';
 export declare class UtilisateurController {
     private readonly utilisateurService;
     constructor(utilisateurService: UtilisateurService);
-    create(createUtilisateurDto: CreateUtilisateurDto): string;
-    findAll(): string;
-    findOne(id: string): string;
+    create(createUtilisateurDto: CreateUtilisateurDto): Promise<{
+        message: string;
+    }>;
+    findAll(): Promise<import("./entities/utilisateur.entity").Utilisateur[]>;
+    findOne(id: string): any;
     update(id: string, updateUtilisateurDto: UpdateUtilisateurDto): string;
     remove(id: string): string;
 }

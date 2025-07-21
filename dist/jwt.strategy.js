@@ -18,7 +18,7 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
     constructor(configService) {
         const secret = configService.get('JWT_SECRET');
         if (!secret) {
-            throw new Error('JWT_SECRET is missing in .env');
+            throw new Error('JWT_SECRET manque dans .env');
         }
         super({
             jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),

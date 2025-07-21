@@ -4,8 +4,8 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import { UtilisateurModule } from './utilisateur/utilisateur.module';
 import { PermisModule } from './permis/permis.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -24,8 +24,8 @@ import { PermisModule } from './permis/permis.module';
          synchronize: true
       })
     }),
-    UtilisateurModule,
-    PermisModule
+    PermisModule,
+    UserModule
   ],
   controllers: [AppController],
   providers: [AppService],

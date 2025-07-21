@@ -13,8 +13,8 @@ const app_service_1 = require("./app.service");
 const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
 const path_1 = require("path");
-const utilisateur_module_1 = require("./utilisateur/utilisateur.module");
 const permis_module_1 = require("./permis/permis.module");
+const user_module_1 = require("./user/user.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -36,8 +36,8 @@ exports.AppModule = AppModule = __decorate([
                     synchronize: true
                 })
             }),
-            utilisateur_module_1.UtilisateurModule,
-            permis_module_1.PermisModule
+            permis_module_1.PermisModule,
+            user_module_1.UserModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
