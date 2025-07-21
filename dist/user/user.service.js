@@ -29,17 +29,26 @@ let UserService = class UserService {
     async create(createUserDto) {
         const existingUser = await this.userRepository.findOneBy({ email: createUserDto.email });
         if (existingUser)
-            return { Message: "L' utilisateur existe déjà" };
+            return { Message: "L'utilisateur existe déjà" };
         const hashed = await bcrypt.hash(createUserDto.mot_de_passe, 10);
-        const user = this.userRepository.create({ ...createUserDto, mot_de_passe: hashed });
+        const user = this.userRepository.create({
+            ...createUserDto,
+            mot_de_passe: hashed
+        });
         await this.userRepository.save(user);
         return { message: 'Enregistrement avec succées' };
     }
     async login(loginUserDto) {
-        const userExiste = await this.userRepository.findOneBy({ email: loginUserDto.email });
+        const { identifiant, mot_de_passe } = loginUserDto;
+        const userExiste = await this.userRepository.findOne({
+            where: [
+                { email: identifiant },
+                { telephone: identifiant }
+            ]
+        });
         if (!userExiste)
             throw new common_1.UnauthorizedException("Identifiant incorrect");
-        const match = await bcrypt.compare(loginUserDto.mot_de_passe, userExiste.mot_de_passe);
+        const match = await bcrypt.compare(mot_de_passe, userExiste.mot_de_passe);
         if (!match)
             throw new common_1.UnauthorizedException("mot de passe incorrect");
         const payload = { sub: userExiste.id, email: userExiste.email };

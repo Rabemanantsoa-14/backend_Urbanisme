@@ -1,6 +1,7 @@
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
@@ -10,6 +11,9 @@ export declare class UserController {
     } | {
         message: string;
         Message?: undefined;
+    }>;
+    login(loginDto: LoginUserDto): Promise<{
+        access_token: string;
     }>;
     findAll(): Promise<import("./entities/user.entity").User[]>;
     findOne(id: string): string;

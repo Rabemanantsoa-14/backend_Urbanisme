@@ -5,18 +5,18 @@ export class User {
     @PrimaryGeneratedColumn()
         id: number
     
-        @Column()
+        @Column({nullable: false})
         nom_prenom: string
     
-        @Column()
+        @Column({unique:true, nullable:false})
         email: string
     
-        @Column()
+        @Column({unique: true, nullable: false})
         telephone: string
     
-        @Column()
+        @Column({nullable: false})
         mot_de_passe: string
     
-        @Column()
+        @Column({nullable: false})
         role: string
 }

@@ -3,6 +3,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
+import { LoginUserDto } from './dto/login-user.dto';
 export declare class UserService {
     private readonly userRepository;
     private jwtService;
@@ -14,7 +15,7 @@ export declare class UserService {
         message: string;
         Message?: undefined;
     }>;
-    login(loginUserDto: CreateUserDto): Promise<{
+    login(loginUserDto: LoginUserDto): Promise<{
         access_token: string;
     }>;
     findAll(): Promise<User[]>;
