@@ -29,6 +29,12 @@ let UserController = class UserController {
     login(loginDto) {
         return this.userService.login(loginDto);
     }
+    async sendCode(emailDto) {
+        return this.userService.sendVerificationCode(emailDto);
+    }
+    async resetPassword(email, code, newPassword) {
+        return this.userService.resetPassword(email, code, newPassword);
+    }
     findAll() {
         return this.userService.findAll();
     }
@@ -57,6 +63,22 @@ __decorate([
     __metadata("design:paramtypes", [login_user_dto_1.LoginUserDto]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "login", null);
+__decorate([
+    (0, common_1.Post)('send-code'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "sendCode", null);
+__decorate([
+    (0, common_1.Post)('reset-password'),
+    __param(0, (0, common_1.Body)('email')),
+    __param(1, (0, common_1.Body)('code')),
+    __param(2, (0, common_1.Body)('newPassword')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "resetPassword", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

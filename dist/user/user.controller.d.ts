@@ -15,6 +15,16 @@ export declare class UserController {
     login(loginDto: LoginUserDto): Promise<{
         access_token: string;
     }>;
+    sendCode(emailDto: CreateUserDto): Promise<{
+        message: string;
+        token?: undefined;
+    } | {
+        message: string;
+        token: string;
+    }>;
+    resetPassword(email: string, code: string, newPassword: string): Promise<{
+        message: string;
+    }>;
     findAll(): Promise<import("./entities/user.entity").User[]>;
     findOne(id: string): string;
     update(id: string, updateUserDto: UpdateUserDto): Promise<{

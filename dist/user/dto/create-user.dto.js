@@ -3,7 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateUserDto = void 0;
 class CreateUserDto {
     id;
-    nom_prenom;
+    nom;
+    prenom;
+    adresse;
+    cin;
     email;
     telephone;
     mot_de_passe;

@@ -6,7 +6,16 @@ export class User {
         id: number
     
         @Column({nullable: false})
-        nom_prenom: string
+        nom: string
+
+        @Column({nullable: false})
+        prenom: string
+
+        @Column({nullable: false})
+        adresse: string
+
+        @Column({nullable: false})
+        cin: string
     
         @Column({unique:true, nullable:false})
         email: string
@@ -17,6 +26,13 @@ export class User {
         @Column({nullable: false})
         mot_de_passe: string
     
-        @Column({nullable: false})
+        @Column({nullable: false, default: 'client'})
         role: string
+
+        @Column({ type: 'varchar', nullable: true })
+        code : string | null
+
+        @Column({ type: 'timestamp', nullable: true })
+        codeCreatedAt: Date | null;
+
 }

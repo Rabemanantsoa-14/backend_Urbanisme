@@ -13,14 +13,15 @@ export class PermisController {
   }
 
   @Get()
-  findAll() {
-    return this.permisService.findAll();
+  async findAll() {
+    return await this.permisService.findAllWithUsers();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.permisService.findOne(+id);
   }
+
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePermiDto: UpdatePermiDto) {

@@ -13,11 +13,16 @@ exports.User = void 0;
 const typeorm_1 = require("typeorm");
 let User = class User {
     id;
-    nom_prenom;
+    nom;
+    prenom;
+    adresse;
+    cin;
     email;
     telephone;
     mot_de_passe;
     role;
+    code;
+    codeCreatedAt;
 };
 exports.User = User;
 __decorate([
@@ -27,7 +32,19 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ nullable: false }),
     __metadata("design:type", String)
-], User.prototype, "nom_prenom", void 0);
+], User.prototype, "nom", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: false }),
+    __metadata("design:type", String)
+], User.prototype, "prenom", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: false }),
+    __metadata("design:type", String)
+], User.prototype, "adresse", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: false }),
+    __metadata("design:type", String)
+], User.prototype, "cin", void 0);
 __decorate([
     (0, typeorm_1.Column)({ unique: true, nullable: false }),
     __metadata("design:type", String)
@@ -41,9 +58,17 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "mot_de_passe", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: false }),
+    (0, typeorm_1.Column)({ nullable: false, default: 'client' }),
     __metadata("design:type", String)
 ], User.prototype, "role", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    __metadata("design:type", Object)
+], User.prototype, "code", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'timestamp', nullable: true }),
+    __metadata("design:type", Object)
+], User.prototype, "codeCreatedAt", void 0);
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)({ name: 'users' })
 ], User);

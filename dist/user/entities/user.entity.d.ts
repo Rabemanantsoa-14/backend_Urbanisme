@@ -1,8 +1,13 @@
 export declare class User {
     id: number;
-    nom_prenom: string;
+    nom: string;
+    prenom: string;
+    adresse: string;
+    cin: string;
     email: string;
     telephone: string;
     mot_de_passe: string;
     role: string;
+    code: string | null;
+    codeCreatedAt: Date | null;
 }

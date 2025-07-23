@@ -19,6 +19,7 @@ const user_entity_1 = require("./entities/user.entity");
 const typeorm_2 = require("typeorm");
 const jwt_1 = require("@nestjs/jwt");
 const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
 let UserService = class UserService {
     userRepository;
     jwtService;
@@ -54,6 +55,51 @@ let UserService = class UserService {
         const payload = { sub: userExiste.id, email: userExiste.email };
         const token = await this.jwtService.signAsync(payload);
         return { access_token: token };
+    }
+    async sendVerificationCode(createUserDto) {
+        const email = createUserDto.email;
+        const emailExiste = await this.userRepository.findOneBy({ email: createUserDto.email });
+        if (!emailExiste)
+            return { message: "Email introuvable" };
+        const code = Math.floor(100000 + Math.random() * 900000);
+        emailExiste.code = code.toString();
+        emailExiste.codeCreatedAt = new Date();
+        await this.userRepository.save(emailExiste);
+        const token = this.jwtService.sign({ emailExiste, code }, { secret: 'JWT_SECRET', expiresIn: '10m' });
+        const transporter = nodemailer.createTransport({
+            host: 'smtp-relay.brevo.com',
+            port: 587,
+            secure: false,
+            auth: {
+                user: '92a900001@smtp-brevo.com',
+                pass: 'DImQjOUr9y4AT0bn',
+            },
+        });
+        await transporter.sendMail({
+            from: '"Urbanisme App" <andria.rabemanantsoa@gmail.com>',
+            to: email,
+            subject: 'Votre code de vérification',
+            text: `Voici votre code de vérification : ${code}`,
+        });
+        return {
+            message: 'Code envoyé par e-mail.',
+            token,
+        };
+    }
+    async resetPassword(email, code, newPassword) {
+        const user = await this.userRepository.findOneBy({ email, code });
+        if (!user) {
+            throw new common_1.UnauthorizedException('Code invalide ou utilisateur introuvable');
+        }
+        const now = new Date().getTime();
+        const codeTimestamp = user.codeCreatedAt?.getTime() ?? 0;
+        const expired = now - codeTimestamp > 10 * 60 * 1000;
+        if (expired) {
+            throw new common_1.UnauthorizedException('Code expiré');
+        }
+        user.mot_de_passe = await bcrypt.hash(newPassword, 10);
+        await this.userRepository.save(user);
+        return { message: 'Mot de passe réinitialisé avec succès.' };
     }
     async findAll() {
         return this.userRepository.find();

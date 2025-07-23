@@ -18,6 +18,16 @@ export declare class UserService {
     login(loginUserDto: LoginUserDto): Promise<{
         access_token: string;
     }>;
+    sendVerificationCode(createUserDto: CreateUserDto): Promise<{
+        message: string;
+        token?: undefined;
+    } | {
+        message: string;
+        token: string;
+    }>;
+    resetPassword(email: string, code: string, newPassword: string): Promise<{
+        message: string;
+    }>;
     findAll(): Promise<User[]>;
     findOne(id: number): string;
     update(id: number, updateUserDto: UpdateUserDto): Promise<{
