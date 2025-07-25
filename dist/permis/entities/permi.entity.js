@@ -38,7 +38,7 @@ __decorate([
     __metadata("design:type", String)
 ], Permi.prototype, "longitude", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: 'en_attente' }),
+    (0, typeorm_1.Column)({ default: 'en attente' }),
     __metadata("design:type", String)
 ], Permi.prototype, "statut", void 0);
 __decorate([

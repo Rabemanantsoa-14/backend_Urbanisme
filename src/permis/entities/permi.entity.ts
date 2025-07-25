@@ -14,7 +14,7 @@ export class Permi {
     @Column({nullable: false})
     longitude: string
 
-    @Column({default: 'en_attente'})
+    @Column({default: 'en attente'})
     statut: string
 
     @Column({nullable: false})

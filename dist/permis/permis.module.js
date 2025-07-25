@@ -13,6 +13,7 @@ const permis_controller_1 = require("./permis.controller");
 const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
 const permi_entity_1 = require("./entities/permi.entity");
+const notification_module_1 = require("../notification/notification.module");
 let PermisModule = class PermisModule {
 };
 exports.PermisModule = PermisModule;
@@ -20,7 +21,8 @@ exports.PermisModule = PermisModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule,
-            typeorm_1.TypeOrmModule.forFeature([permi_entity_1.Permi])
+            typeorm_1.TypeOrmModule.forFeature([permi_entity_1.Permi]),
+            notification_module_1.NotificationModule
         ],
         controllers: [permis_controller_1.PermisController],
         providers: [permis_service_1.PermisService],

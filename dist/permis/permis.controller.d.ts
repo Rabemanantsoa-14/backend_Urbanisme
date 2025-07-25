@@ -8,13 +8,7 @@ export declare class PermisController {
         message: string;
     }>;
     findAll(): Promise<any[]>;
-    findOne(id: string): Promise<import("./entities/permi.entity").Permi[]>;
-    update(id: string, updatePermiDto: UpdatePermiDto): Promise<{
-        message: string;
-        user?: undefined;
-    } | {
-        message: string;
-        user: import("./entities/permi.entity").Permi;
-    }>;
+    getPermiByStatut(statut: string): Promise<number>;
+    update(id: string, updatePermiDto: UpdatePermiDto): Promise<import("./entities/permi.entity").Permi>;
     remove(id: string): Promise<import("typeorm").DeleteResult>;
 }

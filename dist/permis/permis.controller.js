@@ -28,8 +28,8 @@ let PermisController = class PermisController {
     async findAll() {
         return await this.permisService.findAllWithUsers();
     }
-    findOne(id) {
-        return this.permisService.findOne(+id);
+    async getPermiByStatut(statut) {
+        return this.permisService.getStatusPermi(statut);
     }
     update(id, updatePermiDto) {
         return this.permisService.update(+id, updatePermiDto);
@@ -53,14 +53,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PermisController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)('statut/:statut'),
+    __param(0, (0, common_1.Param)('statut')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], PermisController.prototype, "findOne", null);
+    __metadata("design:returntype", Promise)
+], PermisController.prototype, "getPermiByStatut", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
+    (0, common_1.Patch)('updatestatut/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),

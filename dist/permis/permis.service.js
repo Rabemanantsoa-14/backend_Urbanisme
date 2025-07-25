@@ -17,15 +17,19 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const permi_entity_1 = require("./entities/permi.entity");
 const typeorm_2 = require("typeorm");
+const notification_service_1 = require("../notification/notification.service");
 let PermisService = class PermisService {
     permiRepository;
-    constructor(permiRepository) {
+    notificationService;
+    constructor(permiRepository, notificationService) {
         this.permiRepository = permiRepository;
+        this.notificationService = notificationService;
     }
     async create(createPermiDto) {
         const permi = this.permiRepository.create(createPermiDto);
-        await this.permiRepository.save(permi);
-        return { message: "enregistrement avec succées" };
+        const saved = await this.permiRepository.save(permi);
+        await this.notificationService.notifyAdminOnNewPermis(saved);
+        return { message: "enregistrement avec succées et notification envoyée" };
     }
     async findAll() {
         return this.permiRepository.find();
@@ -60,14 +64,18 @@ let PermisService = class PermisService {
     }
     async update(id, updatePermiDto) {
         const permi = await this.permiRepository.findOneBy({ id });
-        if (!permi)
-            return { message: 'permi introvable' };
+        if (!permi) {
+            throw new common_1.NotFoundException('Permis introuvable');
+        }
         Object.assign(permi, updatePermiDto);
         const updatedPermi = await this.permiRepository.save(permi);
-        return {
-            message: 'Modification avec succès',
-            user: updatedPermi,
-        };
+        await this.notificationService.notifyClientOnPermisUpdate(updatedPermi, updatedPermi.statut);
+        return updatedPermi;
+    }
+    async getStatusPermi(statut) {
+        return this.permiRepository.count({
+            where: { statut },
+        });
     }
     async remove(id) {
         const permi = await this.findOne(id);
@@ -81,6 +89,7 @@ exports.PermisService = PermisService;
 exports.PermisService = PermisService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(permi_entity_1.Permi)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        notification_service_1.NotificationService])
 ], PermisService);
 //# sourceMappingURL=permis.service.js.map

@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { PermisModule } from './permis/permis.module';
 import { UserModule } from './user/user.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { UserModule } from './user/user.module';
       })
     }),
     PermisModule,
-    UserModule
+    UserModule,
+    NotificationModule
   ],
   controllers: [AppController],
   providers: [AppService],

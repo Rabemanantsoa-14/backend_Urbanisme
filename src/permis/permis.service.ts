@@ -4,12 +4,13 @@ import { UpdatePermiDto } from './dto/update-permi.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Permi } from './entities/permi.entity';
 import { Repository } from 'typeorm';
-
+import { NotificationService } from 'src/notification/notification.service';
 @Injectable()
 export class PermisService {
   constructor(
     @InjectRepository(Permi)
-    private readonly permiRepository: Repository<Permi>
+    private readonly permiRepository: Repository<Permi>,
+    private readonly notificationService: NotificationService
   ){
    
   }
@@ -17,9 +18,11 @@ export class PermisService {
   //creer un permis de construction
   async create(createPermiDto: CreatePermiDto) {
     const permi = this.permiRepository.create(createPermiDto);
-    await this.permiRepository.save(permi)
+    const saved = await this.permiRepository.save(permi)
 
-     return {message: "enregistrement avec succées"}
+    await this.notificationService.notifyAdminOnNewPermis(saved)
+
+    return {message: "enregistrement avec succées et notification envoyée"}
   }
 
 
@@ -58,24 +61,28 @@ export class PermisService {
     .getRawMany(); // getRawMany car on récupère des champs de plusieurs tables
 }
 
+  async update(id: number, updatePermiDto: UpdatePermiDto): Promise<Permi> {
+    const permi = await this.permiRepository.findOneBy({ id });
 
-
-
-  async update(id: number, updatePermiDto: UpdatePermiDto) {
-    const permi = await this.permiRepository.findOneBy({id})
-
-    if(!permi)
-      return{message: 'permi introvable'}
-
-    Object.assign(permi, updatePermiDto )
-
-    const updatedPermi = await this.permiRepository.save(permi)
-
-    return {
-      message: 'Modification avec succès',
-      user: updatedPermi,
+    if (!permi) {
+      throw new NotFoundException('Permis introuvable');
     }
+
+    Object.assign(permi, updatePermiDto);
+
+    const updatedPermi = await this.permiRepository.save(permi);
+
+    await this.notificationService.notifyClientOnPermisUpdate(updatedPermi, updatedPermi.statut);
+
+    return updatedPermi;
   }
+
+  async getStatusPermi(statut: string): Promise<number> {
+    return this.permiRepository.count({
+      where: { statut },
+    })
+  }
+
 
   async remove(id: number) {
     const permi = await this.findOne(id)

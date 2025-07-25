@@ -17,13 +17,12 @@ export class PermisController {
     return await this.permisService.findAllWithUsers();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.permisService.findOne(+id);
+  @Get('statut/:statut')
+  async getPermiByStatut(@Param('statut') statut: string) {
+    return this.permisService.getStatusPermi(statut);
   }
 
-
-  @Patch(':id')
+  @Patch('updatestatut/:id')
   update(@Param('id') id: string, @Body() updatePermiDto: UpdatePermiDto) {
     return this.permisService.update(+id, updatePermiDto);
   }
